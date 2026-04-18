@@ -6,11 +6,11 @@ class Task:
     def __init__(self):
         self.name:str = ""
         self.description:str = ""
-        self.category:Category = None #Add category class?
+        self.category:Category = Category() #Add category class?
         self.tags = [] #"Can listen to audiobook", "Fun", "Menial", "Project.." etc
         self.points:int = 0 #implement later. from 0 to 200 probably.
-        self.deadline:dt.datetime = None #BY DEFAULT, SET TO END OF DAY
-        self.time:dt.timedelta = 0 #time commitment 
+        self.deadline:dt.datetime = dt.datetime(year=2026, month=4, day= 18, hour=23, minute=59) #BY DEFAULT, SET TO END OF DAY
+        self.time:dt.timedelta =  dt.timedelta(hours=1)#time commitment 
         self.energy:int = 0 #0-10
         self.difficulty:int = 0 #0-10
         self.importance:int = 0 #user given, 0-10
@@ -21,7 +21,7 @@ class Task:
         self.priority:int = self.update_priority() #range from 0 to 1000
 
     def convert_task_data_to_json(self):
-        res = json.dumps(self.__dict__)
+        res = json.dumps(self.__dict__, default=custom_serializer)
         return res
     
     def update_priority(self): #assign self a priority value
@@ -31,7 +31,7 @@ class Task:
             time_to_deadline = dt.timedelta()
             time_to_deadline = self.deadline - dt.datetime.now() 
             hours_to_deadline = time_to_deadline/dt.timedelta(hours=1)
-            priority += 800*(self.time.hours)/hours_to_deadline #ex: task that takes 1 hour will have priority 40 24 hours before deadline
+            priority += (self.time.seconds/(60^2))/hours_to_deadline #ex: task that takes 1 hour will have priority 40 24 hours before deadline
         #tasks with important categories will have more priority
         priority = priority * self.category.priority 
         #if this task is a prerequisite and its requisite task has higher priority, assume the requisite's priority
@@ -48,6 +48,8 @@ class Category: #?????
         self.priority:int = priority
         self.ID = ID
 
+  
+
     def __repr__(self):
         repr_str = str(self.__dict__)
         return repr_str
@@ -57,3 +59,18 @@ class User:
         self.name = ""
         self.current_energy = 0
         self.avg_energy = 0
+
+
+def custom_serializer(obj):
+    "custom serializer for objects that don't traditionally format with JSON"
+    if obj is None:
+        return 'None'
+    elif isinstance(obj, dt.datetime):
+        return obj.isoformat()
+    elif isinstance(obj, dt.timedelta):
+        return str(obj)
+    elif isinstance(obj, Category):
+        return obj.__dict__
+    
+
+    raise TypeError(f'Type {type(obj)} not serializable')

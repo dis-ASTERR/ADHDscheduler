@@ -1,11 +1,9 @@
-from database import Database
+#from database import Database
 from task import Task, Category
 import datetime as dt
 class User:
     def __init__(self, name:str ='debug') -> None:
         self.name = name
-
-
 
 
 def main():
@@ -22,19 +20,18 @@ def main():
     test_task.time = dt.timedelta(hours=5)
     test_task.energy = 6
     test_task.difficulty = 3
+    test_task.importance = 9
     test_task.prerequisite = None
     test_task.requisite = None
     test_task.complete = False
     test_task.priority = test_task.update_priority()
     test_task.ID = hash(test_task)
 
-    print(test_task.convert_task_data_to_json())
+    json_file = test_task.convert_task_data_to_json()
+    for item in json_file.split(','):
+        print(item)
     
     
 
 
-
-    
-
-if __name__ != '__main__':
-    main()
+main()
