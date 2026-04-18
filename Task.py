@@ -31,7 +31,7 @@ class Task:
             time_to_deadline = dt.timedelta()
             time_to_deadline = self.deadline - dt.datetime.now() 
             hours_to_deadline = time_to_deadline/dt.timedelta(hours=1)
-            priority += 800*(self.time.hours)/hours_to_deadline #ex: task that takes 1 hour will have priority 40 24 hours before deadline
+            priority += int(800*(self.time.hours)/hours_to_deadline) #ex: task that takes 1 hour will have priority 40 24 hours before deadline
         #tasks with important categories will have more priority
         priority = priority * self.category.priority 
         #if this task is a prerequisite and its requisite task has higher priority, assume the requisite's priority
@@ -54,6 +54,9 @@ class Category: #?????
 
 class User:
     def __init__(self):
-        self.name = ""
-        self.current_energy = 0
-        self.avg_energy = 0
+        self.name:str = ""
+        self.current_energy:int = 0
+        self.avg_energy:float = 0
+        self.current_time:dt.timedelta = 0
+        self.ID:int = 0
+        #each user has its own task database
