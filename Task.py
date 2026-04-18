@@ -77,11 +77,7 @@ class Category: #?????
         repr_str = str(self.__dict__)
         return repr_str
 
-class User:
-    def __init__(self):
-        self.name = ""
-        self.current_energy = 0
-        self.avg_energy = 0
+
 
 
 def custom_serializer(obj):
