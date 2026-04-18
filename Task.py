@@ -1,11 +1,12 @@
 #Store Task & related Classes
 import datetime as dt
+import json
 
 class Task:
     def __init__(self):
         self.name:str = ""
         self.description:str = ""
-        self.category = None #Add category class?
+        self.category:Category = None #Add category class?
         self.tags = [] #"Can listen to audiobook", "Fun", "Menial", "Project.." etc
         self.points:int = 0 #implement later. from 0 to 200 probably.
         self.deadline:dt.datetime = None 
@@ -14,9 +15,13 @@ class Task:
         self.difficulty:int = 0 #0-10
         self.prerequisite = None
         self.requisite = None
-        self.ID = 0
-        self.complete = False
+        self.ID:int = 0
+        self.complete:bool = False
         self.priority = self.update_priority() #range from 0 to 1000
+
+    def convert_task_data_to_json(self):
+        res = json.dumps(self.__dict__)
+        return res
     
     def update_priority(self): #assign self a priority value
         #calculate priority
@@ -34,10 +39,14 @@ class Task:
         return f"Name='{self.name}', Desc={self.description}, Category={self.category.name}, Category.priority={self.category.priority}, Tags={self.tags}, Points={self.points}, Deadline={self.deadline}, Energy={self.energy}, Difficulty={self.difficulty}, Prerequisite={self.prerequisite}, Requisite={self.requisite}, ID={self.ID}, Complete={self.complete}, Priority={self.priority}"
 
 class Category: #?????
-    def __init__(self):
-        self.name:str = ""
-        self.priority:int = 0
-        self.ID = 0
+    def __init__(self, name: str='', priority:int = 0, ID:int = 0):
+        self.name:str = name
+        self.priority:int = priority
+        self.ID = ID
+
+    def __repr__(self):
+        repr_str = str(self.__dict__)
+        return repr_str
 
 class User:
     def __init__(self):
