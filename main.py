@@ -10,14 +10,28 @@ class User:
 
 def main():
     db = Database()
-    db.test_entry_tast()
+    tasks = db.query_database(deadline=dt.datetime(year=2026, month=4, day= 18, hour=23, minute=59, tzinfo=dt.UTC))
+    for task in tasks:
+        task.print_out_task()
 
+
+
+
+    #result = db.database.cursor_comand()
+    """col = db.get_collection_from_user()
+    if col is not None:
+        result = col.find({'name': 'Test', 'category.name': '', 'points':10})
+        for entry in result:
+            task = db.convert_entry_to_task(entry)
+            task.print_out_task()
+
+    else:
+        print("Error! - could not find collection")"""
+    
     
 
-
-
-
-main()
+if __name__ == '__main__':
+    main()
 
 def task_example_collapsable():
     """test_task = Task()

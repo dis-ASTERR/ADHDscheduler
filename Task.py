@@ -22,7 +22,7 @@ class Task:
                 category_priority:int = 0,
                 category_ID:int = 0,
 
-                deadline = dt.datetime(year=2026, month=4, day= 18, hour=23, minute=59), 
+                deadline = dt.datetime(year=2026, month=4, day= 18, hour=23, minute=59, tzinfo=dt.UTC), 
                 time_to_complete = dt.timedelta(hours=1),
         ):
         self.name:str = name
@@ -61,8 +61,12 @@ class Task:
         if self.requisite is not None and self.requisite.priority > self.priority:
             self.priority = self.requisite.priority
         
+    def print_out_task(self):
+        for k, v in self.__dict__.items():
+            print(k, v)
 
     def __repr__(self):
+        return str(self.__dict__)
         return f"Name='{self.name}', Desc={self.description}, Category={self.category}, Tags={self.tags}, Points={self.points}, Deadline={self.deadline}, time_to_complete={self.time_to_complete}, Energy={self.energy}, Difficulty={self.difficulty}, Prerequisite={self.prerequisite}, Requisite={self.requisite}, ID={self.ID}, Complete={self.complete}, Priority={self.priority}"
 
 class Category: #?????
