@@ -1,29 +1,33 @@
 #UI elements
 MDScreen:
     md_bg_color: self.theme_cls.backgroundColor
-    MDFloatLayout:
+    MDBoxLayout:
+        orientation: 'vertical'
         size: root.width, root.height
         TimePicker
+            #pos_hint:{"center_x":.8, "center_y":.9}
         DatePicker
+        LabelSlider:
+            title: "Energy"
+            #pos_hint: {"center_x":.5, "center_y":.2}
 
 <TimePicker>:
     MDButton:
-        pos_hint: {"center_x": .5, "center_y": .5}
         id: add_deadline
         style: "elevated"
         on_release: self.parent.show_time_picker(0,0)
         #on_cancel: self.dismiss()
        
-
         MDButtonIcon:
             icon: "plus"
 
         MDButtonText:
             text: "Add deadline..."
+            halign: "center"
 
 <DatePicker>:
-    pos_hint: {'center_x': .5, 'center_y': 1}
-    size_hint_x: .5
+    #pos_hint: {'center_x': .5, 'center_y': 1}
+    #size_hint_x: .5
     MDTextField:
         id: field
         mode: "outlined"
@@ -40,9 +44,13 @@ MDScreen:
 
         MDTextFieldTrailingIcon:
             icon: "calendar"
+
 <LabelSlider>:
     MDBoxLayout:
         orientation: 'horizontal'
+        MDLabel:
+            text: self.parent.parent.title
+            halign: "right"
         MDSlider:
             id: slider    
             step:1
@@ -55,14 +63,19 @@ MDScreen:
 
     
 
-#<Intro_Questionnaire>
-#    BoxLayout:
-#        Label:
-#            id: welcome_msg
-#            text: "Welcome back!"
-#        Label:
-#            text: 'Energy:'
-#        Slider:
+<Intro_Questionnaire>
+    MDScreen:
+        BoxLayout:
+            orientation: 'vertical'
+            MDLabel:
+                id: welcome_msg
+                text: "Welcome back!"
+            LabelSlider:
+                id:energy
+                text: 'Energy:'
+            MDLabel:
+                text: "How much time do you have?"
+        
 #            id: energy_lvl
 #            min: 0
 #            max: 10

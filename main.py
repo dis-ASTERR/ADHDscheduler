@@ -5,6 +5,7 @@ import datetime as dt
 #KIVY STUFF
 from kivy.clock import Clock
 from kivy.lang import Builder
+import kivy.properties as kp
 
 from kivymd.app import MDApp
 from kivymd.uix.pickers import MDDockedDatePicker
@@ -12,6 +13,7 @@ from kivymd.uix.pickers import MDTimePickerDialVertical
 from kivymd.uix.button import MDButton
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.boxlayout import MDBoxLayout
+
 # from kivymd.uix.screen import MDScreen
 # from kivymd.uix.button import MDRaisedButton, MDButtonC
 
@@ -38,7 +40,12 @@ class TimePicker(MDBoxLayout):
         hour = time_picker.hour
         self.timereturn = dt.timedelta(hours=int(hour), minutes=int(minute))
         time_picker.dismiss()
-    
+
+class LabelSlider(MDBoxLayout):
+    def __init__(self, **kwargs):
+        super(LabelSlider, self).__init__(**kwargs)
+    title = kp.StringProperty("")
+
 class DatePicker(MDBoxLayout):
     def __init__(self, **kwargs):
         super(DatePicker, self).__init__(**kwargs)
@@ -51,10 +58,10 @@ class DatePicker(MDBoxLayout):
         date_dialog = MDDockedDatePicker(
             min_date = dt.date.today()
         )
-        date_dialog.pos = [
-            self.ids.field.center_x - date_dialog.width / 2,
-            self.ids.field.y - (0.5*date_dialog.height),
-        ]
+        # date_dialog.pos = [
+        #     self.ids.field.center_x - date_dialog.width / 2,
+        #     self.ids.field.y - (0.5*date_dialog.height),
+        # ]
         date_dialog.bind(on_cancel=self.cancel_date_picker)
         date_dialog.bind(on_ok=self.date_picker_ok)
         #date_dialog.bind(on_select_day=self.date_picker_update(date_dialog,text_id))
