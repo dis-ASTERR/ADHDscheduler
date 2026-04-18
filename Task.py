@@ -1,6 +1,7 @@
 #Store Task & related Classes
 import datetime as dt
 import json
+from typing import Optional
 
 class Task:
     def __init__(self):
@@ -14,8 +15,8 @@ class Task:
         self.energy:int = 0 #0-10
         self.difficulty:int = 0 #0-10
         self.importance:int = 0 #user given, 0-10
-        self.prerequisite = None
-        self.requisite = None
+        self.prerequisite:Task = None
+        self.requisite:Task = None
         self.ID:int = 0
         self.complete:bool = False
         self.priority:int = self.update_priority() #range from 0 to 1000
@@ -28,16 +29,15 @@ class Task:
         #calculate priority
         priority = 8*self.importance
         if self.deadline is not None:
-            time_to_deadline = dt.timedelta()
-            time_to_deadline = self.deadline - dt.datetime.now() 
+            time_to_deadline:dt.timedelta = self.deadline - dt.datetime.now() 
             hours_to_deadline = time_to_deadline/dt.timedelta(hours=1)
             priority += (self.time.seconds/(60^2))/hours_to_deadline #ex: task that takes 1 hour will have priority 40 24 hours before deadline
         #tasks with important categories will have more priority
-        priority = priority * self.category.priority 
+        priority *= self.category.priority 
         #if this task is a prerequisite and its requisite task has higher priority, assume the requisite's priority
         if self.requisite is not None and self.requisite.priority > self.priority:
             self.priority = self.requisite.priority
-        return priority
+        return int(priority)
 
     def __repr__(self):
         return f"Name='{self.name}', Desc={self.description}, Category={self.category.name}, Category.priority={self.category.priority}, Tags={self.tags}, Points={self.points}, Deadline={self.deadline}, Energy={self.energy}, Difficulty={self.difficulty}, Prerequisite={self.prerequisite}, Requisite={self.requisite}, ID={self.ID}, Complete={self.complete}, Priority={self.priority}"

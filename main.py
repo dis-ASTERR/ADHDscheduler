@@ -1,15 +1,16 @@
-#from database import Database
+from database import Database
 from task import Task, Category
 import datetime as dt
+import json
 class User:
     def __init__(self, name:str ='debug') -> None:
         self.name = name
 
 
 def main():
-    #db = Database()
-    #collection = db.get_collection_from_user()
-    print("wowow")
+    db = Database()
+    db.print_out_tasks_of_given_collection()
+
     test_task = Task()
     test_task.name = "Test Task"
     test_task.description = "This is a test task designed to make me suffer! :3"
@@ -27,9 +28,9 @@ def main():
     test_task.priority = test_task.update_priority()
     test_task.ID = hash(test_task)
 
-    json_file = test_task.convert_task_data_to_json()
-    for item in json_file.split(','):
-        print(item)
+    #db.add_task_to_database(task=test_task)
+
+    
     
     
 
