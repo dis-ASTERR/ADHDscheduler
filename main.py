@@ -2,6 +2,7 @@ from database import Database
 from task import Task, Category
 import datetime as dt
 import json
+
 class User:
     def __init__(self, name:str ='debug') -> None:
         self.name = name
