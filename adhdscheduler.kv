@@ -1,0 +1,73 @@
+#UI elements
+MDScreen:
+    md_bg_color: self.theme_cls.backgroundColor
+    MDBoxLayout:
+        TimePicker
+        DatePicker
+
+<TimePicker>:
+    MDButton:
+        id: add_deadline
+        style: "elevated"
+        on_release: app.show_time_picker(0,0)
+        #on_cancel: self.dismiss()
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        MDButtonIcon:
+            icon: "plus"
+
+        MDButtonText:
+            text: "Add deadline..."
+
+<DatePicker>:
+    MDTextField:
+        id: field
+        mode: "outlined"
+        pos_hint: {'center_x': .5, 'center_y': .85}
+        size_hint_x: .5
+        on_focus: app.show_date_picker(self.focus, mydate)
+
+        MDTextFieldHintText:
+            id:mydate
+            #text: self.set_text_full_date()
+
+        MDTextFieldHelperText:
+            text: "MM/DD/YYYY"
+            mode: "persistent"
+
+        MDTextFieldTrailingIcon:
+            icon: "calendar"
+<LabelSlider>:
+    MDBoxLayout:
+        orientation: 'horizontal'
+        MDSlider:
+            id: slider    
+            step:1
+            value:5
+            max:10
+            min:0
+            MDSliderHandle
+        MDLabel:
+            text: f"{int(slider.value)}/10"
+
+    
+
+#<Intro_Questionnaire>
+#    BoxLayout:
+#        Label:
+#            id: welcome_msg
+#            text: "Welcome back!"
+#        Label:
+#            text: 'Energy:'
+#        Slider:
+#            id: energy_lvl
+#            min: 0
+#            max: 10
+#            step: 1
+#            orientation: 'horizontal'
+#        Label:
+#            text: str(energy_lvl.value) + "/10"
+#        Label:
+#            text: "How much time do you have?"
+
+    
