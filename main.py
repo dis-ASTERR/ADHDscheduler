@@ -11,7 +11,7 @@ from kivymd.uix.pickers import MDDockedDatePicker
 from kivymd.uix.pickers import MDTimePickerDialVertical
 from kivymd.uix.button import MDButton
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.widget import MDWidget
+from kivymd.uix.boxlayout import MDBoxLayout
 # from kivymd.uix.screen import MDScreen
 # from kivymd.uix.button import MDRaisedButton, MDButtonC
 
@@ -19,7 +19,10 @@ from kivymd.uix.widget import MDWidget
 # class User:
 #     def __init__(self, name:str ='debug') -> None:
 #         self.name = name
-class TimePicker(MDWidget):
+class TimePicker(MDBoxLayout):
+    def __init__(self, **kwargs):
+        super(TimePicker, self).__init__(**kwargs)
+
     def show_time_picker(self, hour, minute):
         self.time_picker= MDTimePickerDialVertical()
         self.time_picker.bind(on_cancel=self.cancel_time_picker)
@@ -33,16 +36,56 @@ class TimePicker(MDWidget):
     def time_picker_ok(self, time_picker:MDTimePickerDialVertical):
         minute = time_picker.minute
         hour = time_picker.hour
-        self.timereturn = dt.timedelta(hours=hour, minutes=minute)
+        self.timereturn = dt.timedelta(hours=int(hour), minutes=int(minute))
         time_picker.dismiss()
     
-class DatePicker(MDWidget):
+class DatePicker(MDBoxLayout):
+    def __init__(self, **kwargs):
+        super(DatePicker, self).__init__(**kwargs)
+        # Call super first to initialize parent class logic
+        
+
+    def show_date_picker(self, focus,text_id):
+        if not focus:
+            return
+        date_dialog = MDDockedDatePicker(
+            min_date = dt.date.today()
+        )
+        date_dialog.pos = [
+            self.ids.field.center_x - date_dialog.width / 2,
+            self.ids.field.y - (0.5*date_dialog.height),
+        ]
+        date_dialog.bind(on_cancel=self.cancel_date_picker)
+        date_dialog.bind(on_ok=self.date_picker_ok)
+        #date_dialog.bind(on_select_day=self.date_picker_update(date_dialog,text_id))
+        date_dialog.open()
+        
+
+    def cancel_date_picker(self, date_picker:MDDockedDatePicker):
+        self.datereturn = None
+        date_picker.dismiss()
+
+
+    def date_picker_ok(self, date_picker:MDDockedDatePicker):
+        day = date_picker.sel_day
+        month = date_picker.sel_month
+        year = date_picker.sel_year
+        self.datereturn = dt.datetime(year=year, month=month, day=day)
+        date_picker.dismiss()
+    
+    # def date_picker_update(self, date_picker:MDDockedDatePicker, textid):
+    #     day = date_picker.sel_day
+    #     month = date_picker.sel_month
+    #     year = date_picker.sel_year
+    ### ISSUE HERE: accessing text field
+    #     self.root.ids.field.ids.textid.text = f"{month}/{day}/{year}"
     pass
+
 class ADHDScheduler(MDApp):
     def build(self):
         self.theme_cls.theme_style="Light"
         self.theme_cls.primary_palette = "Blue"
-        return Builder.load_file("adhdscheduler.kv")
+        #return Builder.load_file("adhdscheduler.kv")
     
     ########### APP FUNCTIONS#########
     def make_task(self):
@@ -66,50 +109,50 @@ class ADHDScheduler(MDApp):
 
     ########### UI FUNCTIONS #########
     ### TIME PICKER###
-    def show_time_picker(self, hour, minute):
-        self.time_picker= MDTimePickerDialVertical()
-        self.time_picker.bind(on_cancel=self.cancel_time_picker)
-        self.time_picker.bind(on_ok=self.time_picker_ok)
-        self.time_picker.open()
+    # def show_time_picker(self, hour, minute):
+    #     self.time_picker= MDTimePickerDialVertical()
+    #     self.time_picker.bind(on_cancel=self.cancel_time_picker)
+    #     self.time_picker.bind(on_ok=self.time_picker_ok)
+    #     self.time_picker.open()
 
-    def cancel_time_picker(self, time_picker:MDTimePickerDialVertical):
-        self.timereturn = None
-        time_picker.dismiss()
+    # def cancel_time_picker(self, time_picker:MDTimePickerDialVertical):
+    #     self.timereturn = None
+    #     time_picker.dismiss()
 
-    def time_picker_ok(self, time_picker:MDTimePickerDialVertical):
-        minute = time_picker.minute
-        hour = time_picker.hour
-        self.timereturn = dt.timedelta(hours=hour, minutes=minute)
-        time_picker.dismiss()
+    # def time_picker_ok(self, time_picker:MDTimePickerDialVertical):
+    #     minute = time_picker.minute
+    #     hour = time_picker.hour
+    #     self.timereturn = dt.timedelta(hours=int(minute), minutes=int(minute))
+    #     time_picker.dismiss()
 
-    ### DATE PICKER ###
-    def show_date_picker(self, focus,text_id):
-        if not focus:
-            return
-        date_dialog = MDDockedDatePicker(
-            min_date = dt.date.today()
-        )
-        date_dialog.pos = [
-            self.root.ids.field.center_x - date_dialog.width / 2,
-            self.root.ids.field.y - (date_dialog.height),
-        ]
-        date_dialog.bind(on_cancel=self.cancel_date_picker)
-        date_dialog.bind(on_ok=self.date_picker_ok)
-        #date_dialog.bind(on_select_day=self.date_picker_update(date_dialog,text_id))
-        date_dialog.open()
+    # ### DATE PICKER ###
+    # def show_date_picker(self, focus,text_id):
+    #     if not focus:
+    #         return
+    #     date_dialog = MDDockedDatePicker(
+    #         min_date = dt.date.today()
+    #     )
+    #     date_dialog.pos = [
+    #         self.root.ids.field.center_x - date_dialog.width / 2,
+    #         self.root.ids.field.y - (date_dialog.height),
+    #     ]
+    #     date_dialog.bind(on_cancel=self.cancel_date_picker)
+    #     date_dialog.bind(on_ok=self.date_picker_ok)
+    #     #date_dialog.bind(on_select_day=self.date_picker_update(date_dialog,text_id))
+    #     date_dialog.open()
         
 
-    def cancel_date_picker(self, date_picker:MDDockedDatePicker):
-        self.datereturn = None
-        date_picker.dismiss()
+    # def cancel_date_picker(self, date_picker:MDDockedDatePicker):
+    #     self.datereturn = None
+    #     date_picker.dismiss()
 
 
-    def date_picker_ok(self, date_picker:MDDockedDatePicker):
-        day = date_picker.sel_day
-        month = date_picker.sel_month
-        year = date_picker.sel_year
-        self.datereturn = dt.datetime(year=year, month=month, day=day)
-        date_picker.dismiss()
+    # def date_picker_ok(self, date_picker:MDDockedDatePicker):
+    #     day = date_picker.sel_day
+    #     month = date_picker.sel_month
+    #     year = date_picker.sel_year
+    #     self.datereturn = dt.datetime(year=year, month=month, day=day)
+    #     date_picker.dismiss()
     
     # def date_picker_update(self, date_picker:MDDockedDatePicker, textid):
     #     day = date_picker.sel_day

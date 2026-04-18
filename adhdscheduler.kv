@@ -1,17 +1,19 @@
 #UI elements
 MDScreen:
     md_bg_color: self.theme_cls.backgroundColor
-    MDBoxLayout:
+    MDFloatLayout:
+        size: root.width, root.height
         TimePicker
         DatePicker
 
 <TimePicker>:
     MDButton:
+        pos_hint: {"center_x": .5, "center_y": .5}
         id: add_deadline
         style: "elevated"
-        on_release: app.show_time_picker(0,0)
+        on_release: self.parent.show_time_picker(0,0)
         #on_cancel: self.dismiss()
-        pos_hint: {"center_x": .5, "center_y": .5}
+       
 
         MDButtonIcon:
             icon: "plus"
@@ -20,12 +22,13 @@ MDScreen:
             text: "Add deadline..."
 
 <DatePicker>:
+    pos_hint: {'center_x': .5, 'center_y': 1}
+    size_hint_x: .5
     MDTextField:
         id: field
         mode: "outlined"
-        pos_hint: {'center_x': .5, 'center_y': .85}
-        size_hint_x: .5
-        on_focus: app.show_date_picker(self.focus, mydate)
+        
+        on_focus: self.parent.show_date_picker(self.focus, mydate)
 
         MDTextFieldHintText:
             id:mydate
