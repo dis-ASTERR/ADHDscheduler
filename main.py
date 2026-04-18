@@ -9,9 +9,17 @@ class User:
 
 def main():
     db = Database()
-    db.print_out_tasks_of_given_collection()
+    db.test_entry_tast()
 
-    test_task = Task()
+    
+
+
+
+
+main()
+
+def task_example_collapsable():
+    """test_task = Task()
     test_task.name = "Test Task"
     test_task.description = "This is a test task designed to make me suffer! :3"
     test_task.category = Category()
@@ -26,13 +34,6 @@ def main():
     test_task.requisite = None
     test_task.complete = False
     test_task.priority = test_task.update_priority()
-    test_task.ID = hash(test_task)
-
+    test_task.ID = hash(test_task)"""
     #db.add_task_to_database(task=test_task)
-
-    
-    
-    
-
-
-main()
+    pass
