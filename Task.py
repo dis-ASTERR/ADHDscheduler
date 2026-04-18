@@ -8,23 +8,27 @@ class Task:
         self.category = None #Add category class?
         self.tags = [] #"Can listen to audiobook", "Fun", "Menial", "Project.." etc
         self.points:int = 0 #implement later. from 0 to 200 probably.
-        self.deadline:dt.datetime = None 
+        self.deadline:dt.datetime = None #BY DEFAULT, SET TO END OF DAY
         self.time:dt.timedelta = 0 #time commitment 
         self.energy:int = 0 #0-10
         self.difficulty:int = 0 #0-10
+        self.importance:int = 0 #user given, 0-10
         self.prerequisite = None
         self.requisite = None
         self.ID = 0
         self.complete = False
-        self.priority = self.update_priority() #range from 0 to 1000
+        self.priority = self.update_priority() #calculated. range from 0 to 100
     
     def update_priority(self): #assign self a priority value
         #calculate priority
-        priority = 1
+        priority = 8*self.importance
         if self.deadline is not None:
             time_to_deadline = dt.timedelta()
             time_to_deadline = self.deadline - dt.datetime.now() 
-            priority += time_to_deadline.days*5
+            hours_to_deadline = time_to_deadline/dt.timedelta(hours=1)
+            priority += 800*(self.time.hours)/hours_to_deadline #ex: task that takes 1 hour will have priority 40 24 hours before deadline
+        #tasks with important categories will have more priority
+        priority = priority * self.category.priority 
         #if this task is a prerequisite and its requisite task has higher priority, assume the requisite's priority
         if self.requisite is not None and self.requisite.priority > self.priority:
             self.priority = self.requisite.priority
