@@ -24,9 +24,21 @@ class Database:
             return False
         
 
-    def get_collection_of_user_data(user:str):
+    def get_collection_from_user(self, user:str='debug'):
         "from a given user string, get collection of user info"
-        pass
+
+        if does_user_exist(user):
+            collection = database.get_collection(user)
+            tasks = collection.find()
+            for task in tasks:
+                for key, value  in task.items():
+                    print(key, value)
+        else:
+            print(f"Unable to find user {user}!")
+
+    def does_user_exist(self, user_name:str) -> bool:
+        print(f'Is user {user_name} in database?', user_name in database.list_collection_names())
+        return user_name in database.list_collection_names()
 
 # Create a new client and connect to the server
 client = MongoClient(uri, tlsCAFile=certifi.where(), server_api=ServerApi('1'))
@@ -47,6 +59,7 @@ def get_database(user:str='debug'):
 def does_user_exist(user_name:str) -> bool:
     print(f'Is user {user_name} in database?', user_name in database.list_collection_names())
     return user_name in database.list_collection_names()
+
 def sample_database_test():
     
     
