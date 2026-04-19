@@ -2,6 +2,7 @@
 import datetime as dt
 import json
 from typing import Optional
+import math
 
 class Task:
     def __init__(self, 
@@ -39,13 +40,16 @@ class Task:
         self.requisite:list[int] = requisites
         self.ID:int = ID
         self.complete:bool = complete
-        self.priority = 0
+        self.priority = self.update_priority()
         #self.priority:int = self.update_priority() #range from 0 to 1000
+
+        self.calculate_point_total()    #calculate point total at the end of initalization
 
     def convert_task_data_to_json(self):
         res = json.dumps(self.__dict__, default=custom_serializer)
         return res
     
+
     def update_priority(self): #assign self a priority value
         
         #calculate priority
@@ -60,7 +64,40 @@ class Task:
         return int(priority)
         # if self.requisite is not None and self.requisite.priority > self.priority:
         #     self.priority = self.requisite.priority
+
+    def calculate_point_total(self) -> int:
+        """
+        This should take in everything in itself to generate a point total
+        maxing out at 50 points
+        - Category
+        - Difficulty
+        - Energy Consumption
+        - Importance
+        """
+
+        def round_to_five(num) -> int:
+            return 5 * round(num/5)
         
+        def log(num:int) -> float:
+            result = math.log(num)
+            return max(1, 2 * result)
+        
+        dt = self.time_to_complete
+        
+        point_total = round_to_five(log(self.priority) * (self.difficulty + self.energy + self.importance) * (dt.seconds/10800) )
+        point_total = min(50, point_total)  #cap out point total at 50
+        min_bound = 10 if self.priority >= 4 else 5
+        point_total = max(min_bound, point_total)   #set lower bound to at least 5 (maybe 10)
+
+        self.points = point_total
+        return point_total
+        
+    def calculate_choice_total(self, current_energy:int) -> int:
+        "returns the choice total for when a new task needs to be picked"
+        choice_total = 10 - abs(current_energy - self.energy)
+        choice_total *= self.update_priority()
+        return choice_total
+
     def print_out_task(self):
         for k, v in self.__dict__.items():
             print(k, v)
@@ -68,6 +105,9 @@ class Task:
     def __repr__(self):
         return str(self.__dict__)
         return f"Name='{self.name}', Desc={self.description}, Category={self.category}, Tags={self.tags}, Points={self.points}, Deadline={self.deadline}, time_to_complete={self.time_to_complete}, Energy={self.energy}, Difficulty={self.difficulty}, Prerequisite={self.prerequisite}, Requisite={self.requisite}, ID={self.ID}, Complete={self.complete}, Priority={self.priority}"
+
+
+    
 
 class Category: #?????
     def __init__(self, name: str='', priority:int = 0, ID:int = 0):

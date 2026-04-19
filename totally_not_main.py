@@ -2,17 +2,17 @@ from database import Database
 from task import Task, Category
 import datetime as dt
 import json
-
-class User:
-    def __init__(self, name:str ='debug') -> None:
-        self.name = name
+from user import User
 
 
 def main():
+    new_user = User("Todd")
+    
     db = Database()
-    tasks = db.query_database(deadline=dt.datetime(year=2026, month=4, day= 18, hour=23, minute=59, tzinfo=dt.UTC))
-    for task in tasks:
-        task.print_out_task()
+    col = db.get_collection_from_user(new_user.name)
+    l_o_t = db.get_all_entries_and_put_them_in_a_list_of_tasks(new_user.name)
+    print(l_o_t)
+    
 
 
 
