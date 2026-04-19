@@ -408,6 +408,28 @@
         MDTextFieldTrailingIcon:
             icon: "calendar"
 
+<GetTimeDelta>:
+    hours: int(str(hours.text)) if hours.text !='' else 0
+    minutes: int(str(minutes.text)) if minutes.text !='' else 0
+    MDBoxLayout:
+        orientation: 'horizontal'
+        MDTextField:
+            input_type: 'number'
+            input_filter: 'int'
+            id:hours
+            text:"0"
+            MDTextFieldHelperText: 
+                text:"Hours"
+        MDTextField:
+            input_type: 'number'
+            input_filter: 'int'
+            id:minutes
+            text:"0"
+            MDTextFieldHelperText: 
+                text:"Minutes"
+
+
+
 
 <LabelSlider>:
     value: slider.value
@@ -460,12 +482,14 @@
                 title: 'Energy:'
             MDLabel:
                 text: "How much time do you have?"
-            TimePicker
+            GetTimeDelta:
+                id:time
             MDButton:
                 id:submit
                 on_release: 
                     root.submit()
-                    root.manager
+                MDButtonIcon: 
+                    icon: "check-circle"
 
             
 <Home>:

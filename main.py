@@ -1,5 +1,6 @@
 #from database import Database
-# from Task import Task, Category
+from user import User
+from task import Task
 import datetime as dt
 
 
@@ -47,7 +48,8 @@ class SearchQuery(MDScreen):
 
 class AddTask(MDScreen):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)  
+        super().__init__(*args, **kwargs) 
+     
 
 
 
@@ -129,14 +131,6 @@ class DatePicker(MDBoxLayout):
         year = date_picker.sel_year
         self.datereturn = dt.datetime(year=year, month=month, day=day)
         date_picker.dismiss()
-  
-   # def date_picker_update(self, date_picker:MDDockedDatePicker, textid):
-   #     day = date_picker.sel_day
-   #     month = date_picker.sel_month
-   #     year = date_picker.sel_year
-   ### ISSUE HERE: accessing text field
-   #     self.root.ids.field.ids.textid.text = f"{month}/{day}/{year}"
-   #        pass
 
 
 class Intro_Q(MDScreen):
@@ -145,13 +139,24 @@ class Intro_Q(MDScreen):
         super(Intro_Q, self).__init__(**kwargs)
     def submit(self):
         energyVal = int(self.ids.energy.value)
+        hours = int(self.ids.time.hours)
+        minutes = int(self.ids.time.minutes)
         self.manager.current = 'Home'
-       # hours = int(self.ids.hours.value)
+        app = MDApp.get_running_app()
+        app.update_user(energyVal, hours, minutes,0)
+        
        # minutes = int(self.ids.minutes.value)
 
+class GetTimeDelta(MDBoxLayout):
+    def __init__(self, **kwargs):
+        super(GetTimeDelta, self).__init__(**kwargs)
+    hours = kp.NumericProperty()
+    minutes = kp.NumericProperty()
+    
 
 
 class ADHDScheduler(MDApp):
+    user = kp.ObjectProperty(User())
     def build(self):
        self.theme_cls.theme_style="Light"
        self.theme_cls.primary_palette = "Blue"
@@ -177,8 +182,13 @@ class ADHDScheduler(MDApp):
         #return datetime object
         #show date picker, then time picker. store values.
         pass
-    def search_tasks(self):
+    def get_tasks(self, query:dict):
+
         #show list of tasks. be able to search via name, category, and tag, and select a task.
+        pass
+    def update_user(self, energy, hours, minutes, points):
+        self.user.current_energy = energy
+        self.user.time = dt.timedelta(hours=hours,minutes=minutes)
         pass
 
 
