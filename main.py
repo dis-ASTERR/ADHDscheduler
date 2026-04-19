@@ -290,8 +290,9 @@ class ADHDScheduler(MDApp):
         #show date picker, then time picker. store values.
         pass
     def complete_task(self):
-        Database.update_one()
-        pass
+        
+        Database().set_task_to_complete(self.user.name, self.task)
+        
     def handle_add_and_query(self, query_info:dict, is_new_task:bool):
         if is_new_task:
             
