@@ -5,7 +5,7 @@ from pymongo import InsertOne
 from bson import Timestamp
 import certifi
 import json
-from Task import Task
+from task import Task
 from typing import Any
 import datetime as dt
 import indexes
@@ -19,14 +19,8 @@ class Database:
     def __init__(self) -> None:
         self.client = MongoClient(uri, tlsCAFile=certifi.where(), server_api=ServerApi('1'))
         self.database = self.client.get_database("ADHD_Users")
-        self.create_indexes()
-
-    def create_indexes(self, user='debug'):
-        collection = self.get_collection_from_user(user)
-        #indexes.view_indexes(collection)
-        pass
       
-        
+    
     def query_database(self, 
                        
                     user:str = 'debug',
@@ -110,12 +104,19 @@ class Database:
 
         return list_of_tasks
 
-    
 
+    def pick_task(self, user, current_energy:int):
+        list_of_tasks = self.get_all_entries_and_put_them_in_a_list_of_tasks(user)
+        task_to_run = None
+        val = 0
+        for task in list_of_tasks:
+            
+            if val < task.calculate_choice_total(current_energy=current_energy):
+                val = task.calculate_choice_total(current_energy=current_energy)
     def is_able_to_connect(self) -> bool:
         "ping client and if something is received, we know we're connected"
         try:
-            client.admin.command('ping')
+            self.client.admin.command('ping')
             print("Pinged your deployment. You successfully connected to MongoDB!")
             return True
 
@@ -141,22 +142,24 @@ class Database:
     def get_collection_from_user(self, user:str='debug'):
         "from a given user string, get collection of user info"
 
-        if does_user_exist(user):
-            collection = database.get_collection(user)
+        if self.does_user_exist(user):
+            collection = self.database.get_collection(user)
             return collection
         else:
-            print(f"Unable to find user {user}!")
-            return None
+            print(f'Unable to find user "{user}"!')
+            print(f'Creating collection for user "{user}"')
+            collection = self.database.create_collection(user)
+            return collection
 
     def does_user_exist(self, user_name:str) -> bool:
         #print(f'Is user {user_name} in database?', user_name in database.list_collection_names())
-        return user_name in database.list_collection_names()
+        return user_name in self.database.list_collection_names()
     
     def add_task_to_database(self, task:Task, user:str= 'debug'):
         "from a given task and user, add task to database if user exists"
-        if does_user_exist(user_name=user):
+        if self.does_user_exist(user_name=user):
             requesting = []
-            collection = database.get_collection(user)
+            collection = self.database.get_collection(user)
             myDict = json.loads(task.convert_task_data_to_json())
             requesting.append(InsertOne(myDict))
 
@@ -212,9 +215,9 @@ class Database:
         )
     
 
-    def get_all_entries_and_put_them_in_a_list_of_tasks(self) -> list[Task]:
+    def get_all_entries_and_put_them_in_a_list_of_tasks(self, user:str) -> list[Task]:
         task_list = []
-        collection = self.get_collection_from_user()
+        collection = self.get_collection_from_user(user)
         if collection is not None:
             tasks = collection.find()
             for entry in tasks:
