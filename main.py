@@ -253,6 +253,11 @@ class GetTimeDelta(MDBoxLayout):
     hours = kp.NumericProperty()
     minutes = kp.NumericProperty()
     
+class TaskCheck(MDBoxLayout):
+    name = kp.StringProperty()
+    desc = kp.StringProperty()
+    def __init__(self, **kwargs):
+        super(TaskCheck, self).__init__(**kwargs)
 
 
 class ADHDScheduler(MDApp):
@@ -275,7 +280,7 @@ class ADHDScheduler(MDApp):
    ########### APP FUNCTIONS#########
     def get_task(self):
         self.task = Database.pick_task_for_user(self.user.main, self.user.current_energy)
-        self.sm.ids.
+        self.ids.tasklist.add_widget(TaskCheck)
 
 
         #generate page (widget tree)
@@ -291,6 +296,7 @@ class ADHDScheduler(MDApp):
         pass
     def complete_task(self):
         Database.update_one()
+
         pass
     def handle_add_and_query(self, query_info:dict, is_new_task:bool):
         if is_new_task:

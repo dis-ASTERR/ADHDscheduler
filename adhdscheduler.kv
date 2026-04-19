@@ -581,10 +581,13 @@
             on_active: 
                 app.complete_task()
         MDBoxLayout:
-            MDLabel:
             orientation: 'vertical'
+            MDLabel:
                 id:taskname
-                text:''
+                text:name
+            MDLabel:
+                id.taskdesc
+                text:desc
                        
 <Home>:
     Screen:
@@ -597,7 +600,7 @@
                 pos_hint: {'x':1,'y':1}
                 size_hint: (None,None)
         MDBoxLayout:
-            id:list
+            id:tasklist
             orientation: 'vertical'
         MDNavigationBar:
             MDNavigationItem:
