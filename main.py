@@ -257,6 +257,7 @@ class GetTimeDelta(MDBoxLayout):
 
 class ADHDScheduler(MDApp):
     user = kp.ObjectProperty(User(name=user_name))
+    task = kp.ObjectPropety()
 
     def build(self):
        self.theme_cls.theme_style="Light"
@@ -272,7 +273,11 @@ class ADHDScheduler(MDApp):
     
   
    ########### APP FUNCTIONS#########
-    def make_task(self):
+    def get_task(self):
+        self.task = Database.pick_task_for_user(self.user.main, self.user.current_energy)
+        self.sm.ids.
+
+
         #generate page (widget tree)
         #name
         #call add deadline (opt)
@@ -285,6 +290,7 @@ class ADHDScheduler(MDApp):
         #show date picker, then time picker. store values.
         pass
     def complete_task(self):
+        Database.update_one()
         pass
     def handle_add_and_query(self, query_info:dict, is_new_task:bool):
         if is_new_task:
