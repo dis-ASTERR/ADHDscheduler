@@ -14,5 +14,4 @@ And then, the program selects a task for the user to complete, offering up point
 These points can potentially be used for various things, like new backgrounds, bonus tasks, etc. 
 (The bonus tasks are the tasks given to the program as an incentive to complete some of the more menial tasks).
 
-
-
+NO AI WAS USED IN THE MAKING OF THIS PROGRAM
