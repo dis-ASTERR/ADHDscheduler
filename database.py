@@ -5,7 +5,7 @@ from pymongo import InsertOne
 from bson import Timestamp
 import certifi
 import json
-from task import Task
+from Task import Task
 from typing import Any
 import datetime as dt
 import indexes
@@ -35,7 +35,7 @@ class Database:
                     tags:list[str] = [],
                     points:int = -1,
                     energy:list[int] = [],
-                    difficulty:list[int] = [],
+                    difficulty:list[int] = [],  #if not blank, takes in two values and puts them in a list - [lowerbound, upper bound]
                     importance:list[int] = [],
                     prerequisites:list[int] = [],
                     requisites:list[int] = [],
@@ -71,13 +71,13 @@ class Database:
             query_dict['points'] = points
         
         if energy != []:
-            query_dict['energy'] = {'$elemMatch': {'$gt' :energy[0] - 1, '$lt': energy[1] + 1}}
+            query_dict['energy'] = {'$gt' :energy[0] - 1, '$lt': energy[1] + 1}
  
         if difficulty != []:
-            query_dict['difficulty'] = {'$elemMatch': {'$gt' :difficulty[0] - 1, '$lt': difficulty[1] + 1}}
+            query_dict['difficulty'] = {'$gt' :difficulty[0] - 1, '$lt': difficulty[1] + 1}
 
         if importance != []:
-            query_dict['importance'] = {'$elemMatch': {'$gt' :importance[0] - 1, '$lt': importance[1] + 1}}
+            query_dict['importance'] = {'$gt' :importance[0] - 1, '$lt': importance[1] + 1}
 
         if ID != 0:
             query_dict['ID'] = ID
@@ -249,7 +249,7 @@ class Database:
 
 
 
-
+"""
 
 
 
@@ -319,3 +319,4 @@ try:
 except Exception as e:
     print(e)
 
+"""
