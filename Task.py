@@ -1,5 +1,6 @@
 #Store Task & related Classes
 import datetime as dt
+from datetime import UTC
 import json
 from typing import Optional
 import math
@@ -16,7 +17,7 @@ class Task:
                 importance:int = 0,
                 prerequisites:list[int] = [],
                 requisites:list[int] = [],
-                ID:int = 0,
+                ID:str = '',
                 complete:bool = False,
 
                 category_name:str = '',
@@ -38,7 +39,7 @@ class Task:
         self.importance:int = importance #user given, 0-10
         self.prerequisite:list[int] = prerequisites     #should be the id of the task
         self.requisite:list[int] = requisites
-        self.ID:int = ID
+        self.ID:str = ID
         self.complete:bool = complete
         self.priority = self.update_priority()
         #self.priority:int = self.update_priority() #range from 0 to 1000
@@ -55,7 +56,7 @@ class Task:
         #calculate priority
         priority = 8*self.importance
         if self.deadline is not None:
-            time_to_deadline:dt.timedelta = self.deadline - dt.datetime.now() 
+            time_to_deadline:dt.timedelta = self.deadline - dt.datetime.now(tz=UTC) 
             hours_to_deadline = time_to_deadline/dt.timedelta(hours=1)
             priority += int(800*(self.time_to_complete.seconds/(60^2))/hours_to_deadline) #ex: task that takes 1 hour will have priority 40 24 hours before deadline
         #tasks with important categories will have more priority
@@ -79,8 +80,10 @@ class Task:
             return 5 * round(num/5)
         
         def log(num:int) -> float:
-            result = math.log(num)
-            return max(1, 2 * result)
+            result = 0
+            if num > 1:
+                result = math.log(num)
+            return max(result, 2 * result)
         
         dt = self.time_to_complete
         

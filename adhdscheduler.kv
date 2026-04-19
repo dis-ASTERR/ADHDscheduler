@@ -11,6 +11,8 @@
 
 <AddTask>:
     #Text
+    name: name
+    description: description
     MDScrollView:
         do_scroll_x: False
         do_scroll_y: True
@@ -18,6 +20,28 @@
         bar_margin: 5
         bar_width: 10
         
+        name: name
+        description: description
+
+
+        category_name: category_name
+        category_priority: category_priority
+        category_ID: category_ID
+
+
+        tags: tags
+        energy: energy
+        difficulty: difficulty
+        importance: importance
+        complete: complete
+
+
+        deadline_date: deadline_date
+        deadline_time: deadline_time
+
+
+
+
         MDBoxLayout:
             id: main_scroll
             orientation: 'vertical'
@@ -25,7 +49,8 @@
             spacing: 10
             padding: 20
             size_hint_y: None
-            height: 1900
+            height: 2000
+
 
             MDLabel:
                 text: "Add Task"
@@ -33,15 +58,19 @@
                 height: 50
 
 
+
+
             #name
             MDLabel:
                 text: 'Name:'
                 size_hint_y: None
                 height: 50
             MDTextField:
-                id: text
+                id: name
                 size_hint_y: None
                 height: 50
+
+
 
 
             #Description
@@ -56,15 +85,6 @@
                 height: 50
 
 
-            #Category
-            MDLabel:
-                text: 'Category:'
-                size_hint_y: None
-                height: 50
-            MDTextField:
-                id: g
-                size_hint_y: None
-                height: 50
 
 
             #should probably be a dropdown list of specific categories that we have
@@ -74,24 +94,30 @@
                 height: 50
 
 
+
+
             MDLabel:
                 text: 'Category Name:'
                 size_hint_y: None
                 height: 50
             MDTextField:
-                id: category
+                id: category_name
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
                 text: 'Category Priority:'
                 size_hint_y: None
                 height: 50
-            MDTextField:
-                id: category
+            LabelSlider:
+                id: category_priority
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
@@ -99,9 +125,11 @@
                 size_hint_y: None
                 height: 50
             MDTextField:
-                id: category
+                id: category_ID
                 size_hint_y: None
                 height: 50
+
+
 
 
             #tags
@@ -115,36 +143,44 @@
                 height: 50
 
 
+
+
             #Energy
             MDLabel:
                 text: "Energy:"
                 size_hint_y: None
                 multiline: True
                 height: 50
-            MDTextField:
+            LabelSlider:
                 id: energy
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
                 text: 'Difficulty:'
                 size_hint_y: None
                 height: 50
-            MDTextField:
+            LabelSlider:
                 id: difficulty
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
                 text: 'Importance:'
                 size_hint_y: None
                 height: 50
-            MDTextField:
+            LabelSlider:
                 id: importance
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
@@ -157,38 +193,52 @@
                 height: 50
 
 
-            #Category
+
+
+            #Time stuff
             MDLabel:
                 text: 'Deadline:'
                 size_hint_y: None
                 height: 50
-            MDTextField:
-                id: deadline
+            DatePicker:
+                id: deadline_date
                 size_hint_y: None
-                height: 50
+                height: 150
+            TimePicker:
+                id: deadline_time
+                size_hint_y: None
+                height: 150
+
+
+
+
 
 
             MDLabel:
-                text: 'Time it take to complete:'
+                text: 'Time it takes to complete:'
                 size_hint_y: None
                 height: 50
-            MDTextField:
+            TimePicker:
                 id: time_to_complete
                 size_hint_y: None
-                height: 50
+                height: 150
 
 
-            
+
             MDButton:
                 style: 'elevated'
                 pos_hint: {"center_x": 0.8, "center_y": 1}
+                on_release: root.submit()
 
 
                 MDButtonText:
                     text: "Search/Add"
 
+
 <SearchQuery>:
     #Text
+    name: name
+    description: description
     MDScrollView:
         do_scroll_x: False
         do_scroll_y: True
@@ -196,6 +246,28 @@
         bar_margin: 5
         bar_width: 10
         
+        name: name
+        description: description
+
+
+        category_name: category_name
+        category_priority: category_priority
+        category_ID: category_ID
+
+
+        tags: tags
+        energy: energy
+        difficulty: difficulty
+        importance: importance
+        complete: complete
+
+
+        deadline_date: deadline_date
+        deadline_time: deadline_time
+
+
+
+
         MDBoxLayout:
             id: main_scroll
             orientation: 'vertical'
@@ -203,12 +275,15 @@
             spacing: 10
             padding: 20
             size_hint_y: None
-            height: 1900
+            height: 2000
+
 
             MDLabel:
-                text: "Search Query"
+                text: "Add Task"
                 size_hint_y: None
                 height: 50
+
+
 
 
             #name
@@ -217,9 +292,11 @@
                 size_hint_y: None
                 height: 50
             MDTextField:
-                id: text
+                id: name
                 size_hint_y: None
                 height: 50
+
+
 
 
             #Description
@@ -234,15 +311,6 @@
                 height: 50
 
 
-            #Category
-            MDLabel:
-                text: 'Category:'
-                size_hint_y: None
-                height: 50
-            MDTextField:
-                id: g
-                size_hint_y: None
-                height: 50
 
 
             #should probably be a dropdown list of specific categories that we have
@@ -252,14 +320,18 @@
                 height: 50
 
 
+
+
             MDLabel:
                 text: 'Category Name:'
                 size_hint_y: None
                 height: 50
             MDTextField:
-                id: category
+                id: category_name
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
@@ -267,9 +339,11 @@
                 size_hint_y: None
                 height: 50
             MDTextField:
-                id: category
+                id: category_priority
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
@@ -277,9 +351,11 @@
                 size_hint_y: None
                 height: 50
             MDTextField:
-                id: category
+                id: category_ID
                 size_hint_y: None
                 height: 50
+
+
 
 
             #tags
@@ -291,6 +367,8 @@
                 id: tags
                 size_hint_y: None
                 height: 50
+
+
 
 
             #Energy
@@ -305,6 +383,8 @@
                 height: 50
 
 
+
+
             MDLabel:
                 text: 'Difficulty:'
                 size_hint_y: None
@@ -313,6 +393,8 @@
                 id: difficulty
                 size_hint_y: None
                 height: 50
+
+
 
 
             MDLabel:
@@ -325,6 +407,8 @@
                 height: 50
 
 
+
+
             MDLabel:
                 text: 'Complete:'
                 size_hint_y: None
@@ -335,33 +419,43 @@
                 height: 50
 
 
-            #Category
+
+
+            #Time stuff
             MDLabel:
                 text: 'Deadline:'
                 size_hint_y: None
                 height: 50
-            MDTextField:
-                id: deadline
+            DatePicker:
+                id: deadline_date
                 size_hint_y: None
-                height: 50
+                height: 150
+            TimePicker:
+                id: deadline_time
+                size_hint_y: None
+                height: 150
+
+
+
+
 
 
             MDLabel:
-                text: 'Time it take to complete:'
+                text: 'Time it takes to complete:'
                 size_hint_y: None
                 height: 50
-            MDTextField:
+            TimePicker:
                 id: time_to_complete
                 size_hint_y: None
-                height: 50
+                height: 150
 
 
-            
+
             MDButton:
-                id: button
                 style: 'elevated'
                 pos_hint: {"center_x": 0.8, "center_y": 1}
                 on_release: root.submit()
+
 
                 MDButtonText:
                     text: "Search/Add"
