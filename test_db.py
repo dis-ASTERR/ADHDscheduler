@@ -1,5 +1,7 @@
 from database import Database
 from user import User
+from task import Task
+
 user = User(name='debug')
 user.current_energy = 5
 user_2 = User(name='Todd')

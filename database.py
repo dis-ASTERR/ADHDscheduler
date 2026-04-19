@@ -5,10 +5,13 @@ from pymongo import InsertOne
 from bson import Timestamp
 import certifi
 import json
-from task import Task
 from typing import Any
 import datetime as dt
+from datetime import UTC
 import indexes
+from task import Task
+
+
 
 
 
@@ -108,9 +111,8 @@ class Database:
     def pick_task_for_user(self, user, current_energy:int):
         list_of_tasks = self.get_all_entries_and_put_them_in_a_list_of_tasks(user)
         task_to_run = None
-        val = 0
+        val = -1
         for task in list_of_tasks:
-            
             if val < task.calculate_choice_total(current_energy=current_energy):
                 val = task.calculate_choice_total(current_energy=current_energy)
                 task_to_run = task
@@ -176,11 +178,13 @@ class Database:
 
         category = dict(entry.get('category'))  #technically could be None 
         deadline = entry.get('deadline')
-        print(type(deadline))
-        if isinstance(deadline, Timestamp):
-            deadline = deadline.as_datetime()
+        #print(deadline[:-3])
+        format = '%Y-%m-%dT%H:%M:%S'
+        deadline = dt.datetime.strptime(deadline[:-6], format)
+        deadline = deadline.astimezone(tz=UTC)
 
         time_to_complete = entry.get('time')
+        
 
         HOURS = 0
         MINUTES = 1
