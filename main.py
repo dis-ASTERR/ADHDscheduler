@@ -165,6 +165,7 @@ class ADHDScheduler(MDApp):
        sm.add_widget(Intro_Q(name='Intro_Q'))
        sm.add_widget(Home(name='Home'))
        sm.add_widget(AddTask(name='AddTask'))
+       sm.add_widget(SearchQuery(name='SearchQuery'))
        return sm
        #return Builder.load_file("adhdscheduler.kv")
     
