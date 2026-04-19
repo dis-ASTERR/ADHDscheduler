@@ -1,7 +1,10 @@
-#from database import Database
+from database import Database
 from user import User
 from task import Task
+
+
 import datetime as dt
+
 
 
 #KIVY STUFF
@@ -39,16 +42,112 @@ from kivy.uix.checkbox import CheckBox
 #         #etc
 #         self.manager.current = "Home"
 
-
-
+user_name = 'Todd'
 
 class SearchQuery(MDScreen):
+    return_Val = kp.DictProperty()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
+    def submit(self):
+        print("Submit function was called!!")
+        query_result = dict()
+        
+        child = self.children[0]
+        print(child.name)
+        query_result['name'] = child.name.text
+        query_result['description'] = child.description.text
+
+
+        #category
+        query_result['category_name'] = child.category_name.text
+        query_result['category_priority'] = child.category_priority.text
+
+        query_result['category_ID'] = [child.category_ID.text]
+        query_result['energy'] = [child.energy.text, child.energy.text]
+        query_result['difficulty'] = [child.difficulty.text, child.difficulty.text]
+        query_result['importance'] = [child.importance.text, child.importance.text]
+
+        query_result['energy'] = child.energy.text
+        query_result['difficulty'] = child.difficulty.text
+        query_result['importance'] = child.importance.text
+
+
+        query_result['complete'] = str(child.complete.active)
+        
+        query_result['deadline'] = ''
+        query_result['time_to_complete'] = ''
+        
+        
+
+
+
+
+        return_Val = query_result
+
+
+        app = MDApp.get_running_app()
+        if app is not None:
+            app.handle_add_and_query(return_Val, is_new_task= False)
+        else:
+            raise ValueError("Unable to find app!")
+
+
 class AddTask(MDScreen):
+    return_Val = kp.DictProperty()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs) 
+
+
+    def submit(self):
+        print("Submit function was called!!")
+        query_result = dict()
+        
+        child = self.children[0]
+        print(child.name)
+        query_result['name'] = child.name.text
+        query_result['description'] = child.description.text
+
+
+        tags = child.tags.text
+        if ',' in tags:
+            tags = tags.split(',')
+        query_result['tags'] = tags
+
+
+        #category
+        query_result['category_name'] = child.category_name.text
+    
+        #could raise error if user isn't perfect :)
+        query_result['category_ID'] = child.category_ID.text
+
+
+        query_result['category_priority'] = child.category_priority.value
+        query_result['energy'] = child.energy.value
+        query_result['difficulty'] = child.difficulty.value
+        query_result['importance'] = child.importance.value
+
+
+        query_result['complete'] = bool(child.complete.active)
+        
+        query_result['deadline'] = ''
+        query_result['time_to_complete'] = ''
+        
+        
+
+
+
+
+        return_Val = query_result
+
+
+        app = MDApp.get_running_app()
+        if app is not None:
+            app.handle_add_and_query(return_Val, is_new_task= True)
+        else:
+            raise ValueError("Unable to find app!")
+
      
 
 
@@ -156,7 +255,7 @@ class GetTimeDelta(MDBoxLayout):
 
 
 class ADHDScheduler(MDApp):
-    user = kp.ObjectProperty(User())
+    user = kp.ObjectProperty(User(name=user_name))
     def build(self):
        self.theme_cls.theme_style="Light"
        self.theme_cls.primary_palette = "Blue"
@@ -183,10 +282,31 @@ class ADHDScheduler(MDApp):
         #return datetime object
         #show date picker, then time picker. store values.
         pass
-    def get_tasks(self, query:dict):
+    def handle_add_and_query(self, query_info:dict, is_new_task:bool):
+        if is_new_task:
+            
+            new_task = Task(
+                name = query_info['name'],
+                description = query_info['description'],
+                tags = query_info['tags'],
+                energy = query_info['energy'],
+                difficulty = query_info['difficulty'],
+                importance = query_info['importance'],
+                complete = query_info['complete'],
 
+
+                category_name = query_info['category_name'],
+                category_priority = query_info['category_priority'],
+                category_ID = query_info['category_ID'],
+            )
+
+        if new_task is not None:
+            Database().add_task_to_database(task=new_task, user=self.user.name)
+        else:
+            print("Unable to create task!")
         #show list of tasks. be able to search via name, category, and tag, and select a task.
         pass
+
     def update_user(self, energy, hours, minutes, points):
         self.user.current_energy = energy
         self.user.time = dt.timedelta(hours=hours,minutes=minutes)
