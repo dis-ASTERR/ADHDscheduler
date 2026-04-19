@@ -12,6 +12,191 @@ MDScreen:
            # title: "Energy"
             #pos_hint: {"center_x":.5, "center_y":.2}
 
+
+
+
+<SearchAddQuery>:
+   #Text
+   MDScrollView:
+       do_scroll_x: False
+       do_scroll_y: True
+       size: root.width * 0.6, root.height * 0.8
+       bar_margin: 5
+       bar_width: 10
+      
+       MDBoxLayout:
+           id: main_scroll
+           orientation: 'vertical'
+          
+           spacing: 10
+           padding: 20
+           size_hint_y: None
+           height: 1800
+           MDLabel:
+               text: "Search"
+               size_hint_y: None
+               height: 50
+
+
+           #name
+           MDLabel:
+               text: 'Name:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: text
+               size_hint_y: None
+               height: 50
+
+
+           #Description
+           MDLabel:
+               text: "Description:"
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: description
+               multiline: True
+               size_hint_y: None
+               height: 50
+
+
+           #Category
+           MDLabel:
+               text: 'Category:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: g
+               size_hint_y: None
+               height: 50
+
+
+           #should probably be a dropdown list of specific categories that we have
+           MDLabel:
+               text: 'Category:'
+               size_hint_y: None
+               height: 50
+
+
+           MDLabel:
+               text: 'Category Name:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: category
+               size_hint_y: None
+               height: 50
+
+
+           MDLabel:
+               text: 'Category Priority:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: category
+               size_hint_y: None
+               height: 50
+
+
+           MDLabel:
+               text: 'Category ID:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: category
+               size_hint_y: None
+               height: 50
+
+
+           #tags
+           MDLabel:
+               text: 'Tags (seperate tags by comma):'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: tags
+               size_hint_y: None
+               height: 50
+
+
+           #Energy
+           MDLabel:
+               text: "Energy:"
+               size_hint_y: None
+               multiline: True
+               height: 50
+           MDTextField:
+               id: energy
+               size_hint_y: None
+               height: 50
+
+
+           MDLabel:
+               text: 'Difficulty:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: difficulty
+               size_hint_y: None
+               height: 50
+
+
+           MDLabel:
+               text: 'Importance:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: importance
+               size_hint_y: None
+               height: 50
+
+
+           MDLabel:
+               text: 'Complete:'
+               size_hint_y: None
+               height: 50
+           CheckBox:
+               id: complete
+               size_hint_y: None
+               height: 50
+
+
+           #Category
+           MDLabel:
+               text: 'Deadline:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: deadline
+               size_hint_y: None
+               height: 50
+
+
+           MDLabel:
+               text: 'Time it take to complete:'
+               size_hint_y: None
+               height: 50
+           MDTextField:
+               id: time_to_complete
+               size_hint_y: None
+               height: 50
+
+
+          
+           MDButton:
+               style: 'elevated'
+               pos_hint: {"center_x": 0.8, "center_y": 1}
+
+
+               MDButtonText:
+                   text: "Search/Add"
+
+
+
+
+
+
 <Time_Delta_Picker>:
     MDGridLayout:
         MDLabel:
@@ -21,38 +206,42 @@ MDScreen:
         
 
 <TimePicker>:
-    MDButton:
-        id: add_deadline
-        style: "elevated"
-        on_release: self.parent.show_time_picker(0,0)
-        #on_cancel: self.dismiss()
-       
-        MDButtonIcon:
-            icon: "plus"
+   MDButton:
+       id: add_deadline
+       style: "elevated"
+       on_release: self.parent.show_time_picker(0,0)
+       #on_cancel: self.dismiss()
+     
+       MDButtonIcon:
+           icon: "plus"
 
         MDButtonText:
             text: "Set Time..."
             halign: "center"
 
 <DatePicker>:
-    #pos_hint: {'center_x': .5, 'center_y': 1}
-    #size_hint_x: .5
-    MDTextField:
-        id: field
-        mode: "outlined"
-        
-        on_focus: self.parent.show_date_picker(self.focus, mydate)
+   #pos_hint: {'center_x': .5, 'center_y': 1}
+   #size_hint_x: .5
+   MDTextField:
+       id: field
+       mode: "outlined"
+      
+       on_focus: self.parent.show_date_picker(self.focus, mydate)
 
-        MDTextFieldHintText:
-            id:mydate
-            #text: self.set_text_full_date()
 
-        MDTextFieldHelperText:
-            text: "MM/DD/YYYY"
-            mode: "persistent"
+       MDTextFieldHintText:
+           id:mydate
+           #text: self.set_text_full_date()
 
-        MDTextFieldTrailingIcon:
-            icon: "calendar"
+
+       MDTextFieldHelperText:
+           text: "MM/DD/YYYY"
+           mode: "persistent"
+
+
+       MDTextFieldTrailingIcon:
+           icon: "calendar"
+
 
 <LabelSlider>:
     MDBoxLayout:
@@ -69,6 +258,21 @@ MDScreen:
             MDSliderHandle
         MDLabel:
             text: f" {int(slider.value)}/10"
+   MDBoxLayout:
+       orientation: 'horizontal'
+       MDLabel:
+           text: self.parent.parent.title
+           halign: "right"
+       MDSlider:
+           id: slider   
+           step:1
+           value:5
+           max:10
+           min:0
+           MDSliderHandle
+       MDLabel:
+           text: f"{int(slider.value)}/10"
+
 
 
 <NewTask>:
