@@ -9,7 +9,7 @@
 
 
 
-<SearchAddQuery>:
+<AddTask>:
     #Text
     MDScrollView:
         do_scroll_x: False
@@ -25,9 +25,188 @@
             spacing: 10
             padding: 20
             size_hint_y: None
-            height: 1800
+            height: 1900
+
             MDLabel:
-                text: "Search"
+                text: "Add Task"
+                size_hint_y: None
+                height: 50
+
+
+            #name
+            MDLabel:
+                text: 'Name:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: text
+                size_hint_y: None
+                height: 50
+
+
+            #Description
+            MDLabel:
+                text: "Description:"
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: description
+                multiline: True
+                size_hint_y: None
+                height: 50
+
+
+            #Category
+            MDLabel:
+                text: 'Category:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: g
+                size_hint_y: None
+                height: 50
+
+
+            #should probably be a dropdown list of specific categories that we have
+            MDLabel:
+                text: 'Category:'
+                size_hint_y: None
+                height: 50
+
+
+            MDLabel:
+                text: 'Category Name:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: category
+                size_hint_y: None
+                height: 50
+
+
+            MDLabel:
+                text: 'Category Priority:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: category
+                size_hint_y: None
+                height: 50
+
+
+            MDLabel:
+                text: 'Category ID:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: category
+                size_hint_y: None
+                height: 50
+
+
+            #tags
+            MDLabel:
+                text: 'Tags (seperate tags by comma):'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: tags
+                size_hint_y: None
+                height: 50
+
+
+            #Energy
+            MDLabel:
+                text: "Energy:"
+                size_hint_y: None
+                multiline: True
+                height: 50
+            MDTextField:
+                id: energy
+                size_hint_y: None
+                height: 50
+
+
+            MDLabel:
+                text: 'Difficulty:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: difficulty
+                size_hint_y: None
+                height: 50
+
+
+            MDLabel:
+                text: 'Importance:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: importance
+                size_hint_y: None
+                height: 50
+
+
+            MDLabel:
+                text: 'Complete:'
+                size_hint_y: None
+                height: 50
+            CheckBox:
+                id: complete
+                size_hint_y: None
+                height: 50
+
+
+            #Category
+            MDLabel:
+                text: 'Deadline:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: deadline
+                size_hint_y: None
+                height: 50
+
+
+            MDLabel:
+                text: 'Time it take to complete:'
+                size_hint_y: None
+                height: 50
+            MDTextField:
+                id: time_to_complete
+                size_hint_y: None
+                height: 50
+
+
+            
+            MDButton:
+                style: 'elevated'
+                pos_hint: {"center_x": 0.8, "center_y": 1}
+
+
+                MDButtonText:
+                    text: "Search/Add"
+
+<SearchQuery>:
+    #Text
+    MDScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        size: root.width * 0.6, root.height * 0.8
+        bar_margin: 5
+        bar_width: 10
+        
+        MDBoxLayout:
+            id: main_scroll
+            orientation: 'vertical'
+            
+            spacing: 10
+            padding: 20
+            size_hint_y: None
+            height: 1900
+
+            MDLabel:
+                text: "Search Query"
                 size_hint_y: None
                 height: 50
 
@@ -190,8 +369,6 @@
 
 
 
-
-
 <TimePicker>:
     MDButton:
         id: add_deadline
@@ -306,7 +483,7 @@
         MDNavigationBar:
             MDNavigationItem:
                 id: addtask
-                on_release: root.manager.current = 'SearchAddQuery'
+                on_release: root.manager.current = 'AddTask'
                 MDNavigationItemIcon:
                     icon: "plus-circle"
                 

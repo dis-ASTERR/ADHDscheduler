@@ -29,18 +29,25 @@ from kivy.uix.checkbox import CheckBox
 
 
 
-class SearchAddQuery(MDScreen):
-    def __init__(self, *args, **kwargs):
-       super().__init__(*args, **kwargs)
+# class SearchAddQuery(MDScreen):
+#     def __init__(self, *args, **kwargs):
+#        super().__init__(*args, **kwargs)
     
-    def submit(self):
-        #energy = int(self.ids.energy.text)
-        #etc
-        self.manager.current = "Home"
+#     def submit(self):
+#         #energy = int(self.ids.energy.text)
+#         #etc
+#         self.manager.current = "Home"
 
 
 
 
+class SearchQuery(MDScreen):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+class AddTask(MDScreen):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)  
 
 
 
@@ -49,27 +56,27 @@ class SearchAddQuery(MDScreen):
 #         self.name = name
 
 class TimePicker(MDBoxLayout):
-   def __init__(self, **kwargs):
-       super(TimePicker, self).__init__(**kwargs)
+    def __init__(self, **kwargs):
+        super(TimePicker, self).__init__(**kwargs)
 
 
-   def show_time_picker(self, hour, minute):
-       self.time_picker= MDTimePickerDialVertical()
-       self.time_picker.bind(on_cancel=self.cancel_time_picker)
-       self.time_picker.bind(on_ok=self.time_picker_ok)
-       self.time_picker.open()
+    def show_time_picker(self, hour, minute):
+        self.time_picker= MDTimePickerDialVertical()
+        self.time_picker.bind(on_cancel=self.cancel_time_picker)
+        self.time_picker.bind(on_ok=self.time_picker_ok)
+        self.time_picker.open()
 
 
-   def cancel_time_picker(self, time_picker:MDTimePickerDialVertical):
-       self.timereturn = None
-       time_picker.dismiss()
+    def cancel_time_picker(self, time_picker:MDTimePickerDialVertical):
+        self.timereturn = None
+        time_picker.dismiss()
 
 
-   def time_picker_ok(self, time_picker:MDTimePickerDialVertical):
-       minute = time_picker.minute
-       hour = time_picker.hour
-       self.timereturn = dt.timedelta(hours=int(hour), minutes=int(minute))
-       time_picker.dismiss()
+    def time_picker_ok(self, time_picker:MDTimePickerDialVertical):
+        minute = time_picker.minute
+        hour = time_picker.hour
+        self.timereturn = dt.timedelta(hours=int(hour), minutes=int(minute))
+        time_picker.dismiss()
 
 
 class LabelSlider(MDBoxLayout):
@@ -86,42 +93,42 @@ class Home(MDScreen):
 
 
 class DatePicker(MDBoxLayout):
-   def __init__(self, **kwargs):
-       super(DatePicker, self).__init__(**kwargs)
-       # Call super first to initialize parent class logic
-      
+    def __init__(self, **kwargs):
+        super(DatePicker, self).__init__(**kwargs)
+        # Call super first to initialize parent class logic
+        
 
 
-   def show_date_picker(self, focus,text_id):
-       if not focus:
-           return
-       date_dialog = MDDockedDatePicker(
-           min_date = dt.date.today()
-       )
-       # date_dialog.pos = [
-       #     self.ids.field.center_x - date_dialog.width / 2,
-       #     self.ids.field.y - (0.5*date_dialog.height),
-       # ]
-       date_dialog.bind(on_cancel=self.cancel_date_picker)
-       date_dialog.bind(on_ok=self.date_picker_ok)
-       #date_dialog.bind(on_select_day=self.date_picker_update(date_dialog,text_id))
-       date_dialog.open()
-      
+    def show_date_picker(self, focus,text_id):
+        if not focus:
+            return
+        date_dialog = MDDockedDatePicker(
+            min_date = dt.date.today()
+        )
+        # date_dialog.pos = [
+        #     self.ids.field.center_x - date_dialog.width / 2,
+        #     self.ids.field.y - (0.5*date_dialog.height),
+        # ]
+        date_dialog.bind(on_cancel=self.cancel_date_picker)
+        date_dialog.bind(on_ok=self.date_picker_ok)
+        #date_dialog.bind(on_select_day=self.date_picker_update(date_dialog,text_id))
+        date_dialog.open()
+        
 
 
-   def cancel_date_picker(self, date_picker:MDDockedDatePicker):
-       self.datereturn = None
-       date_picker.dismiss()
+    def cancel_date_picker(self, date_picker:MDDockedDatePicker):
+        self.datereturn = None
+        date_picker.dismiss()
 
 
 
 
-   def date_picker_ok(self, date_picker:MDDockedDatePicker):
-       day = date_picker.sel_day
-       month = date_picker.sel_month
-       year = date_picker.sel_year
-       self.datereturn = dt.datetime(year=year, month=month, day=day)
-       date_picker.dismiss()
+    def date_picker_ok(self, date_picker:MDDockedDatePicker):
+        day = date_picker.sel_day
+        month = date_picker.sel_month
+        year = date_picker.sel_year
+        self.datereturn = dt.datetime(year=year, month=month, day=day)
+        date_picker.dismiss()
   
    # def date_picker_update(self, date_picker:MDDockedDatePicker, textid):
    #     day = date_picker.sel_day
@@ -129,7 +136,7 @@ class DatePicker(MDBoxLayout):
    #     year = date_picker.sel_year
    ### ISSUE HERE: accessing text field
    #     self.root.ids.field.ids.textid.text = f"{month}/{day}/{year}"
-   pass
+   #        pass
 
 
 class Intro_Q(MDScreen):
@@ -145,34 +152,34 @@ class Intro_Q(MDScreen):
 
 
 class ADHDScheduler(MDApp):
-   def build(self):
+    def build(self):
        self.theme_cls.theme_style="Light"
        self.theme_cls.primary_palette = "Blue"
        sm = MDScreenManager()
        sm.md_bg_color = self.theme_cls.backgroundColor
        sm.add_widget(Intro_Q(name='Intro_Q'))
        sm.add_widget(Home(name='Home'))
-       sm.add_widget(SearchAddQuery(name='SearchAddQuery'))
+       sm.add_widget(AddTask(name='AddTask'))
        return sm
        #return Builder.load_file("adhdscheduler.kv")
     
   
    ########### APP FUNCTIONS#########
-   def make_task(self):
-       #generate page (widget tree)
-       #name
-       #call add deadline (opt)
-       #add prerequisite or requisite task with search_tasks
-       # 3 sliders: energy, difficulty, importance
-       #send to database
-       pass
-   def add_deadline(self):
-       #return datetime object
-       #show date picker, then time picker. store values.
-       pass
-   def search_tasks(self):
-       #show list of tasks. be able to search via name, category, and tag, and select a task.
-       pass
+    def make_task(self):
+        #generate page (widget tree)
+        #name
+        #call add deadline (opt)
+        #add prerequisite or requisite task with search_tasks
+        # 3 sliders: energy, difficulty, importance
+        #send to database
+        pass
+    def add_deadline(self):
+        #return datetime object
+        #show date picker, then time picker. store values.
+        pass
+    def search_tasks(self):
+        #show list of tasks. be able to search via name, category, and tag, and select a task.
+        pass
 
 
 
