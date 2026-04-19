@@ -61,9 +61,27 @@ MDScreen:
         MDLabel:
             text: f"{int(slider.value)}/10"
 
-    
 
-<Intro_Questionnaire>
+<NewTask>:
+    MDScreen:
+        MDBoxLayout:
+            MDTextField:
+                id: name
+                MDTextFieldLeadingIcon:
+                    icon: "checkbox-blank-circle-outline"
+                MDTextFieldHintText: 
+                    text: "Name"
+            MDTextField:
+                id: desc
+                MDTextFieldHintText: 
+                    text: "Description"
+                MDTextFieldHelperText:
+                    text: "Optional"
+
+
+
+
+<Intro_Questionnaire>:
     MDScreen:
         BoxLayout:
             orientation: 'vertical'
@@ -76,14 +94,3 @@ MDScreen:
             MDLabel:
                 text: "How much time do you have?"
         
-#            id: energy_lvl
-#            min: 0
-#            max: 10
-#            step: 1
-#            orientation: 'horizontal'
-#        Label:
-#            text: str(energy_lvl.value) + "/10"
-#        Label:
-#            text: "How much time do you have?"
-
-    
