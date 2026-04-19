@@ -122,8 +122,9 @@ class Database:
             
     def set_task_to_complete(self, user:str, task:Task):
         collection = self.get_collection_from_user(user)
-        filter = {'complete': 'true'}
-        collection.update_one(filter, {'name': task.name})
+        filter = {'name': task.name}
+        update_operation = {'$set': {'complete': 'true'}}
+        collection.update_one(filter, update_operation)
     
     def is_able_to_connect(self) -> bool:
         "ping client and if something is received, we know we're connected"
