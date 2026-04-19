@@ -6,7 +6,9 @@ import datetime as dt
 #KIVY STUFF
 from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen
 import kivy.properties as kp
+
 
 
 from kivymd.app import MDApp
@@ -16,6 +18,7 @@ from kivymd.uix.pickers import MDTimePickerDialVertical
 #from kivymd.uix.textfield import MDTextField
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.scrollview import MDScrollView
 from kivy.uix.checkbox import CheckBox
 
@@ -26,9 +29,19 @@ from kivy.uix.checkbox import CheckBox
 
 
 
-class SearchAddQuery(MDScrollView):
-   def __init__(self, *args, **kwargs):
+class SearchAddQuery(MDScreen):
+    def __init__(self, *args, **kwargs):
        super().__init__(*args, **kwargs)
+    
+    def submit(self):
+        #energy = int(self.ids.energy.text)
+        #etc
+        self.manager.current = "Home"
+
+
+
+
+
 
 
 # class User:
@@ -63,6 +76,7 @@ class LabelSlider(MDBoxLayout):
    def __init__(self, **kwargs):
        super(LabelSlider, self).__init__(**kwargs)
    title = kp.StringProperty("")
+   value = kp.NumericProperty(0)
 
 
 class Home(MDScreen):
@@ -119,14 +133,29 @@ class DatePicker(MDBoxLayout):
 
 
 class Intro_Q(MDScreen):
+    energyVal= kp.NumericProperty()
     def __init__(self, **kwargs):
         super(Intro_Q, self).__init__(**kwargs)
+    def submit(self):
+        energyVal = int(self.ids.energy.value)
+        self.manager.current = 'Home'
+       # hours = int(self.ids.hours.value)
+       # minutes = int(self.ids.minutes.value)
+
+
 
 class ADHDScheduler(MDApp):
    def build(self):
        self.theme_cls.theme_style="Light"
        self.theme_cls.primary_palette = "Blue"
+       sm = MDScreenManager()
+       sm.md_bg_color = self.theme_cls.backgroundColor
+       sm.add_widget(Intro_Q(name='Intro_Q'))
+       sm.add_widget(Home(name='Home'))
+       sm.add_widget(SearchAddQuery(name='SearchAddQuery'))
+       return sm
        #return Builder.load_file("adhdscheduler.kv")
+    
   
    ########### APP FUNCTIONS#########
    def make_task(self):
@@ -220,10 +249,6 @@ class ADHDScheduler(MDApp):
 
 
 
-
-
-
-# class Intro_Questionnaire(BoxLayout):
 
 
 

@@ -1,16 +1,10 @@
 #UI elements
-MDScreen:
-    md_bg_color: self.theme_cls.backgroundColor
-    MDBoxLayout:
-        orientation: 'vertical'
-        size: root.width, root.height
-        #TimePicker
-            #pos_hint:{"center_x":.8, "center_y":.9}
-        #DatePicker
-        #LabelSlider:
-            #title: "Energy"
-            #pos_hint: {"center_x":.5, "center_y":.2}
-        SearchAddQuery:
+#ScreenManager:
+ #   id:sm
+  #  md_bg_color: self.theme_cls.backgroundColor
+   # Home:
+    #SearchAddQuery:
+    #Intro_Q:
 
 
 
@@ -185,9 +179,10 @@ MDScreen:
 
             
             MDButton:
+                id: button
                 style: 'elevated'
                 pos_hint: {"center_x": 0.8, "center_y": 1}
-
+                on_release: root.submit()
 
                 MDButtonText:
                     text: "Search/Add"
@@ -238,6 +233,7 @@ MDScreen:
 
 
 <LabelSlider>:
+    value: slider.value
     MDBoxLayout:
         orientation: 'horizontal'
         MDLabel:
@@ -256,7 +252,7 @@ MDScreen:
 
 
 <NewTask>:
-    MDScreen:
+    Screen:
         MDBoxLayout:
             MDTextField:
                 id: name
@@ -276,7 +272,7 @@ MDScreen:
 
 
 <Intro_Q>:
-    MDScreen:
+    Screen:
         BoxLayout:
             orientation: 'vertical'
             MDLabel:
@@ -288,16 +284,29 @@ MDScreen:
             MDLabel:
                 text: "How much time do you have?"
             TimePicker
+            MDButton:
+                id:submit
+                on_release: 
+                    root.submit()
+                    root.manager
+
             
 <Home>:
-    MDScreen:
-        MDFloatLayout:
+    Screen:
+        MDAnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'
             MDLabel:
                 id:pointcount
                 text: f"{self.parent.parent.parent.points} Points"
+                pos_hint: {'x':1,'y':1}
+                size_hint: (None,None)
+        MDBoxLayout:
+            orientation: 'vertical'
         MDNavigationBar:
             MDNavigationItem:
                 id: addtask
+                on_release: root.manager.current = 'SearchAddQuery'
                 MDNavigationItemIcon:
                     icon: "plus-circle"
                 
