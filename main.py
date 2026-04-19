@@ -10,9 +10,10 @@ import kivy.properties as kp
 from kivymd.app import MDApp
 from kivymd.uix.pickers import MDDockedDatePicker
 from kivymd.uix.pickers import MDTimePickerDialVertical
-from kivymd.uix.button import MDButton
-from kivymd.uix.textfield import MDTextField
+#from kivymd.uix.button import MDButton
+#from kivymd.uix.textfield import MDTextField
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.screen import MDScreen
 
 # from kivymd.uix.screen import MDScreen
 # from kivymd.uix.button import MDRaisedButton, MDButtonC
@@ -21,6 +22,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 # class User:
 #     def __init__(self, name:str ='debug') -> None:
 #         self.name = name
+
 class TimePicker(MDBoxLayout):
     def __init__(self, **kwargs):
         super(TimePicker, self).__init__(**kwargs)
@@ -45,6 +47,12 @@ class LabelSlider(MDBoxLayout):
     def __init__(self, **kwargs):
         super(LabelSlider, self).__init__(**kwargs)
     title = kp.StringProperty("")
+
+class Home(MDScreen):
+    def __init__(self, **kwargs):
+        super(Home, self).__init__(**kwargs)
+    points = kp.NumericProperty(0)
+
 
 class DatePicker(MDBoxLayout):
     def __init__(self, **kwargs):
@@ -87,6 +95,10 @@ class DatePicker(MDBoxLayout):
     ### ISSUE HERE: accessing text field
     #     self.root.ids.field.ids.textid.text = f"{month}/{day}/{year}"
     pass
+
+class Intro_Q(MDScreen):
+    def __init__(self, **kwargs):
+        super(Intro_Q, self).__init__(**kwargs)
 
 class ADHDScheduler(MDApp):
     def build(self):

@@ -1,15 +1,24 @@
 #UI elements
 MDScreen:
     md_bg_color: self.theme_cls.backgroundColor
-    MDBoxLayout:
-        orientation: 'vertical'
-        size: root.width, root.height
-        TimePicker
-            #pos_hint:{"center_x":.8, "center_y":.9}
-        DatePicker
-        LabelSlider:
-            title: "Energy"
+    Home
+    #MDBoxLayout:
+        #orientation: 'vertical'
+        #size: root.width, root.height
+        #TimePicker
+        #    #pos_hint:{"center_x":.8, "center_y":.9}
+        #DatePicker
+        #LabelSlider:
+           # title: "Energy"
             #pos_hint: {"center_x":.5, "center_y":.2}
+
+<Time_Delta_Picker>:
+    MDGridLayout:
+        MDLabel:
+            text:
+        MDTextField:
+            id: hours
+        
 
 <TimePicker>:
     MDButton:
@@ -22,7 +31,7 @@ MDScreen:
             icon: "plus"
 
         MDButtonText:
-            text: "Add deadline..."
+            text: "Set Time..."
             halign: "center"
 
 <DatePicker>:
@@ -59,7 +68,7 @@ MDScreen:
             min:0
             MDSliderHandle
         MDLabel:
-            text: f"{int(slider.value)}/10"
+            text: f" {int(slider.value)}/10"
 
 
 <NewTask>:
@@ -81,7 +90,7 @@ MDScreen:
 
 
 
-<Intro_Questionnaire>:
+<Intro_Q>:
     MDScreen:
         BoxLayout:
             orientation: 'vertical'
@@ -90,7 +99,22 @@ MDScreen:
                 text: "Welcome back!"
             LabelSlider:
                 id:energy
-                text: 'Energy:'
+                title: 'Energy:'
             MDLabel:
                 text: "How much time do you have?"
+            TimePicker
+            
+<Home>:
+    MDScreen:
+        MDFloatLayout:
+            MDLabel:
+                id:pointcount
+                text: f"{self.parent.parent.parent.points} Points"
+        MDNavigationBar:
+            MDNavigationItem:
+                id: addtask
+                MDNavigationItemIcon:
+                    icon: "plus-circle"
+                
+
         
