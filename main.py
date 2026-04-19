@@ -25,6 +25,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.scrollview import MDScrollView
 from kivy.uix.checkbox import CheckBox
+from kivymd.uix.label import MDLabel
 
 
 # from kivymd.uix.screen import MDScreen
@@ -93,6 +94,7 @@ class SearchQuery(MDScreen):
             app.handle_add_and_query(return_Val, is_new_task= False)
         else:
             raise ValueError("Unable to find app!")
+        self.manager.current='Home'
 
 
 class AddTask(MDScreen):
@@ -148,6 +150,7 @@ class AddTask(MDScreen):
             app.handle_add_and_query(return_Val, is_new_task= True)
         else:
             raise ValueError("Unable to find app!")
+        self.manager.current="Home"
 
      
 
@@ -244,6 +247,7 @@ class Intro_Q(MDScreen):
         self.manager.current = 'Home'
         app = MDApp.get_running_app()
         app.update_user(energyVal, hours, minutes,0)
+        app.get_task()
         
        # minutes = int(self.ids.minutes.value)
 
@@ -262,7 +266,7 @@ class TaskCheck(MDBoxLayout):
 
 class ADHDScheduler(MDApp):
     user = kp.ObjectProperty(User(name=user_name))
-    task = kp.ObjectPropety()
+    task = kp.ObjectProperty()
 
     def build(self):
        self.theme_cls.theme_style="Light"
@@ -279,8 +283,12 @@ class ADHDScheduler(MDApp):
   
    ########### APP FUNCTIONS#########
     def get_task(self):
-        self.task = Database.pick_task_for_user(self.user.main, self.user.current_energy)
-        self.ids.tasklist.add_widget(TaskCheck)
+        self.root.get_screen("Home").ids.tasklist.clear_widgets()
+        self.task = Database().pick_task_for_user(user=self.user.name, current_energy=self.user.current_energy)
+        if self.task is not None:
+            self.root.get_screen("Home").ids.tasklist.add_widget(TaskCheck(name=self.task.name, desc=self.task.description))
+        else:
+            self.root.get_screen("Home").ids.tasklist.add_widget(MDLabel(text="All done; great job!"))
 
 
         #generate page (widget tree)
@@ -295,9 +303,13 @@ class ADHDScheduler(MDApp):
         #show date picker, then time picker. store values.
         pass
     def complete_task(self):
-        Database.update_one()
-
-        pass
+        self.user.current_points += self.task.calculate_point_total()
+        Database().set_task_to_complete(self.user.name, self.task)
+        self.root.get_screen("Home").ids.tasklist.clear_widgets()
+        self.root.get_screen("Home").points = self.user.current_points
+        self.get_task()
+        
+        
     def handle_add_and_query(self, query_info:dict, is_new_task:bool):
         if is_new_task:
             
@@ -316,17 +328,18 @@ class ADHDScheduler(MDApp):
                 category_ID = query_info['category_ID'],
             )
 
-        if new_task is not None:
+        if is_new_task and new_task is not None:
             Database().add_task_to_database(task=new_task, user=self.user.name)
         else:
             print("Unable to create task!")
         #show list of tasks. be able to search via name, category, and tag, and select a task.
-        pass
+        self.get_task()
+        
 
     def update_user(self, energy, hours, minutes, points):
         self.user.current_energy = energy
         self.user.time = dt.timedelta(hours=hours,minutes=minutes)
-        pass
+        
 
 
 
