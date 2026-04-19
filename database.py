@@ -110,10 +110,14 @@ class Database:
 
     def pick_task_for_user(self, user, current_energy:int):
         list_of_tasks = self.get_all_entries_and_put_them_in_a_list_of_tasks(user)
+        for task in list_of_tasks:
+            print('Task:')
+            print(task)
         task_to_run = None
         val = -1
         for task in list_of_tasks:
             if task is None: continue
+            if task.complete: continue
             if val < task.calculate_choice_total(current_energy=current_energy):
                 val = task.calculate_choice_total(current_energy=current_energy)
                 task_to_run = task
@@ -188,7 +192,7 @@ class Database:
         #print(deadline[:-3])
         format = '%Y-%m-%dT%H:%M:%S'
         deadline = dt.datetime.strptime(deadline[:-6], format)
-        deadline = deadline.astimezone(tz=UTC)
+        deadline = None
 
         time_to_complete = entry.get('time')
         
@@ -207,29 +211,29 @@ class Database:
         print()"""
 
         
-        try:
-            return Task(
-                name = entry['name'] if entry.get('name') is not None else '',
-                description = entry['description'] if entry.get('description') is not None else '',
-                tags = list(entry['tags']) if entry.get('tags') is not None else [],
-                points = int(entry['points']) if entry.get('points') is not None else 0,
-                energy = int(entry['energy']) if entry.get('energy') is not None else 0,
-                difficulty = int(entry['difficulty']) if entry.get('difficulty') is not None else 0,
-                importance = int(entry['importance']) if entry.get('importance') is not None else 0,
-                prerequisites = [int(item) for item in list(entry['prerequisites'])] if entry.get('prerequisites') is not None else [],
-                requisites = [int(item) for item in list(entry['requisites'])] if entry.get('requisites') is not None else [],
-                ID = int(entry['ID']) if entry.get("ID") is not '' else 0,
-                complete = True if entry.get('complete') == 'true' else False,
+        #try:
+        return Task(
+            name = entry['name'] if entry.get('name') is not None else '',
+            description = entry['description'] if entry.get('description') is not None else '',
+            tags = list(entry['tags']) if entry.get('tags') is not None else [],
+            points = int(entry['points']) if entry.get('points') is not None else 0,
+            energy = int(entry['energy']) if entry.get('energy') is not None else 0,
+            difficulty = int(entry['difficulty']) if entry.get('difficulty') is not None else 0,
+            importance = int(entry['importance']) if entry.get('importance') is not None else 0,
+            prerequisites = [int(item) for item in list(entry['prerequisites'])] if entry.get('prerequisites') is not None else [],
+            requisites = [int(item) for item in list(entry['requisites'])] if entry.get('requisites') is not None else [],
+            ID = int(entry['ID']) if entry.get("ID") != '' else 0,
+            complete = True if entry.get('complete') == 'true' else False,
 
-                category_name = category['name'] if category is not None and category.get('name') is not None else '',
-                category_priority = int(category['priority']) if category is not None and category.get('priority') is not None else 0,
-                category_ID = int(category['ID']) if category is not None and category.get('ID') is not None else 0,
+            category_name = category['name'] if category is not None and category.get('name') is not None else '',
+            category_priority = int(category['priority']) if category is not None and category.get('priority') is not None  and  category.get('priority') != ''else 0,
+            category_ID = int(category['ID']) if category is not None and category.get('ID') is not None and category.get('ID') != '' else 0,
 
-                deadline = deadline if deadline is not None else dt.datetime(year=2026, month=4, day= 18, hour=23, minute=59), 
-                time_to_complete = dt.timedelta(hours = time_to_complete[HOURS], minutes=time_to_complete[MINUTES], seconds=time_to_complete[SECONDS]) if time_to_complete is not None else dt.timedelta(hours=1)
-        
-            )
-        except: return
+            deadline = deadline if deadline is not None else dt.datetime(year=2026, month=4, day= 18, hour=23, minute=59, tzinfo=UTC), 
+            time_to_complete = dt.timedelta(hours = time_to_complete[HOURS], minutes=time_to_complete[MINUTES], seconds=time_to_complete[SECONDS]) if time_to_complete is not None else dt.timedelta(hours=1)
+    
+        )
+        #except: return
     
 
     def get_all_entries_and_put_them_in_a_list_of_tasks(self, user:str) -> list[Task]:

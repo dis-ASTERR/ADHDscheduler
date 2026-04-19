@@ -62,7 +62,7 @@ class Task:
         #tasks with important categories will have more priority
         priority *= self.category.priority 
         #if this task is a prerequisite and its requisite task has higher priority, assume the requisite's priority
-        return int(priority)
+        return max(0,int(priority))
         # if self.requisite is not None and self.requisite.priority > self.priority:
         #     self.priority = self.requisite.priority
 

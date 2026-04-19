@@ -44,7 +44,7 @@ from kivymd.uix.label import MDLabel
 #         self.manager.current = "Home"
 
 user_name = 'Todd'
-
+glob_task = None
 class SearchQuery(MDScreen):
     return_Val = kp.DictProperty()
     
@@ -283,28 +283,24 @@ class ADHDScheduler(MDApp):
   
    ########### APP FUNCTIONS#########
     def get_task(self):
+        global glob_task
         self.root.get_screen("Home").ids.tasklist.clear_widgets()
-        self.task = Database().pick_task_for_user(user=self.user.name, current_energy=self.user.current_energy)
-        if self.task is not None:
-            self.root.get_screen("Home").ids.tasklist.add_widget(TaskCheck(name=self.task.name, desc=self.task.description))
+        task = Database().pick_task_for_user(user=self.user.name, current_energy=self.user.current_energy)
+        if task is None:
+            print("Task is none!!")
+        if task is not None:
+            self.root.get_screen("Home").ids.tasklist.add_widget(TaskCheck(name=task.name, desc=task.description))
+            glob_task = task
         else:
             self.root.get_screen("Home").ids.tasklist.add_widget(MDLabel(text="All done; great job!"))
 
-
-        #generate page (widget tree)
-        #name
-        #call add deadline (opt)
-        #add prerequisite or requisite task with search_tasks
-        # 3 sliders: energy, difficulty, importance
-        #send to database
-        pass
     def add_deadline(self):
         #return datetime object
         #show date picker, then time picker. store values.
         pass
     def complete_task(self):
-        self.user.current_points += self.task.calculate_point_total()
-        Database().set_task_to_complete(self.user.name, self.task)
+        self.user.current_points += glob_task.calculate_point_total()
+        Database().set_task_to_complete(self.user.name, glob_task)
         self.root.get_screen("Home").ids.tasklist.clear_widgets()
         self.root.get_screen("Home").points = self.user.current_points
         self.get_task()
@@ -334,6 +330,7 @@ class ADHDScheduler(MDApp):
             print("Unable to create task!")
         #show list of tasks. be able to search via name, category, and tag, and select a task.
         self.get_task()
+        print("UPDATED TASK AFTER ADDING!!!!!!!!!!!!!")
         
 
     def update_user(self, energy, hours, minutes, points):
