@@ -576,18 +576,25 @@
 
 <taskCheck>:
     MDBoxLayout:
+        height:200
+        width:500
         orientation: 'horizontal'
         MDCheckbox:
             on_active: 
                 app.complete_task()
         MDBoxLayout:
+            spacing:0
             orientation: 'vertical'
+            height:self.minimum_height
             MDLabel:
+                height:50
                 id:taskname
-                text:name
+                text: root.name
+                font_style:"Headline"
             MDLabel:
-                id.taskdesc
-                text:desc
+                height:40
+                id:taskdesc
+                text: root.desc
                        
 <Home>:
     Screen:
@@ -599,9 +606,13 @@
                 text: f"{self.parent.parent.parent.points} Points"
                 pos_hint: {'x':1,'y':1}
                 size_hint: (None,None)
-        MDBoxLayout:
-            id:tasklist
-            orientation: 'vertical'
+        MDAnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            MDBoxLayout:
+                id:tasklist
+                orientation: 'vertical'
+                adaptive_height:False
         MDNavigationBar:
             MDNavigationItem:
                 id: addtask
