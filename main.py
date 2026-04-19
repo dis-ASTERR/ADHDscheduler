@@ -46,6 +46,7 @@ user_name = 'Todd'
 
 class SearchQuery(MDScreen):
     return_Val = kp.DictProperty()
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -256,6 +257,7 @@ class GetTimeDelta(MDBoxLayout):
 
 class ADHDScheduler(MDApp):
     user = kp.ObjectProperty(User(name=user_name))
+
     def build(self):
        self.theme_cls.theme_style="Light"
        self.theme_cls.primary_palette = "Blue"
@@ -281,6 +283,8 @@ class ADHDScheduler(MDApp):
     def add_deadline(self):
         #return datetime object
         #show date picker, then time picker. store values.
+        pass
+    def complete_task(self):
         pass
     def handle_add_and_query(self, query_info:dict, is_new_task:bool):
         if is_new_task:

@@ -1,14 +1,3 @@
-#UI elements
-#ScreenManager:
- #   id:sm
-  #  md_bg_color: self.theme_cls.backgroundColor
-   # Home:
-    #SearchAddQuery:
-    #Intro_Q:
-
-
-
-
 <AddTask>:
     #Text
     name: name
@@ -525,8 +514,6 @@
                 text:"Minutes"
 
 
-
-
 <LabelSlider>:
     value: slider.value
     MDBoxLayout:
@@ -587,7 +574,18 @@
                 MDButtonIcon: 
                     icon: "check-circle"
 
-            
+<taskCheck>:
+    MDBoxLayout:
+        orientation: 'horizontal'
+        MDCheckbox:
+            on_active: 
+                app.complete_task()
+        MDBoxLayout:
+            MDLabel:
+            orientation: 'vertical'
+                id:taskname
+                text:''
+                       
 <Home>:
     Screen:
         MDAnchorLayout:
@@ -599,6 +597,7 @@
                 pos_hint: {'x':1,'y':1}
                 size_hint: (None,None)
         MDBoxLayout:
+            id:list
             orientation: 'vertical'
         MDNavigationBar:
             MDNavigationItem:
