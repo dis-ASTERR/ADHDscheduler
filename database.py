@@ -105,7 +105,7 @@ class Database:
         return list_of_tasks
 
 
-    def pick_task(self, user, current_energy:int):
+    def pick_task_for_user(self, user, current_energy:int):
         list_of_tasks = self.get_all_entries_and_put_them_in_a_list_of_tasks(user)
         task_to_run = None
         val = 0
@@ -113,6 +113,11 @@ class Database:
             
             if val < task.calculate_choice_total(current_energy=current_energy):
                 val = task.calculate_choice_total(current_energy=current_energy)
+                task_to_run = task
+
+
+        return task_to_run
+            
     def is_able_to_connect(self) -> bool:
         "ping client and if something is received, we know we're connected"
         try:
@@ -171,7 +176,7 @@ class Database:
 
         category = dict(entry.get('category'))  #technically could be None 
         deadline = entry.get('deadline')
-
+        print(type(deadline))
         if isinstance(deadline, Timestamp):
             deadline = deadline.as_datetime()
 

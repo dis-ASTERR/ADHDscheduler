@@ -56,6 +56,7 @@ class Task:
         #calculate priority
         priority = 8*self.importance
         if self.deadline is not None:
+            print(self.deadline, dt.datetime.now(tz=UTC))
             time_to_deadline:dt.timedelta = self.deadline - dt.datetime.now(tz=UTC) 
             hours_to_deadline = time_to_deadline/dt.timedelta(hours=1)
             priority += int(800*(self.time_to_complete.seconds/(60^2))/hours_to_deadline) #ex: task that takes 1 hour will have priority 40 24 hours before deadline
